@@ -9,29 +9,50 @@ export default class pin extends React.Component {
     }
 
     handleChange = (value, i) => {
-        console.log(this.props)
         const {length} = this.props
         this.values[i] = value
         
-
         if(value.length > 3 && i < length-1 ){
             this.elem[i+1].input.focus();
         }
-       
+        this.props.onChange(this.values.join(""));
     }
 
     onBackspace = (index, e) => {
 		if (index > 0) {
-			this.elements[index - 1].input.focus();
+			this.elem[index - 1].input.focus();
 		}
-		this.props.onChange(this.values.join(''));
+        this.props.onChange(this.values.join(""));
+    };
+
+    handlePaste = (e) => {
+		e.preventDefault();
+        var x = e.clipboardData.getData('Text').split('')
+        let temp=[]
+        var str=""
+        for(var j=0;j<x.length;j++){
+            str+=x[j];
+        if((j+1)%4===0){
+            temp.push(str)
+            str=""
+        }
+        }
+		temp.forEach((value, i) => {
+            this.values[i] = value;
+            console.log(value)
+			this.elem[i].input.value = value;
+			if (i < this.props.length - 1) {
+				this.elem[i + 1].input.focus();
+			}
+        })
+        this.props.onChange(this.values.join(""));
 	};
 
 
     render(){
         
         return (
-            <div>
+            <div onPaste={this.handlePaste}>
                 {
                     this.values.map((item, i) => (
                         <PinItem 
@@ -42,6 +63,7 @@ export default class pin extends React.Component {
                         />
                     ))
                 }
+                
             </div>
         )
     }

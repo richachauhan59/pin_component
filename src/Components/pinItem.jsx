@@ -1,11 +1,14 @@
 import React from 'react'
+import '../App.css'
 
 export default class pinItem extends React.Component {
-    constructor(props){
-        super(props)
 
+    handleKey = (e) => {
+        if(e.keyCode === 8 && !this.input.value){
+            this.props.onBackspace(e)
+        }
     }
-
+    
     focus = () => {
         this.input.focus()
     }
@@ -18,14 +21,18 @@ export default class pinItem extends React.Component {
         return (
            
                 <input 
-                    ref={n => this.input[i] = n}
+                    ref={n => this.input = n}
                     onChange={this.onChange}
                     maxLength={4}
+                    onKeyDown={this.handleKey}
                     style={{
                         padding:"15px",
-                        width:"100px",
-                        height:"80px",
-                        fontSize:"14px"
+                        width:"150px",
+                        height:"60px",
+                        fontSize:"50px",
+                        margin:"27px",
+                        border: "6px solid #749fb0",
+                        borderRadius: "5px",
                     }}
                 />
         )
