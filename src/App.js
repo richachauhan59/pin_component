@@ -14,14 +14,17 @@ export default class App extends React.Component {
 
   handleSubmit = () => {
     const list1 = [...this.state.list]
-    list1.push(this.state.value)
-    
+    if(this.state.value != ""){
+      list1.push(this.state.value)
+    }
     this.setState({
-      display:!this.state.display
+      display:true,
+      list:list1
     })
   }
 
   render() {
+    console.log(this.state.list, "list")
     const isTrue = this.state.value === "12345";
     return (
       <div className="App">
@@ -40,7 +43,7 @@ export default class App extends React.Component {
               borderRadius: "5px"
         }} onClick={this.handleSubmit} >Submit</button>
         {
-          (this.state.display && this.state.value.length>0) ? <div> {
+          (this.state.display && this.state.list.length > 0) ? <div> {
             (this.state.list).map(item => 
               <h1>{item}</h1>
             )
@@ -53,7 +56,7 @@ export default class App extends React.Component {
             background: "grey",
             borderRadius: "5px"
           }}
-             onClick={() => this.setState({value: "", display: false})}>delete</button> </div> : <div></div>
+             onClick={() => this.setState({list:[], display: false})}>delete</button> </div> : <div></div>
         }
       </div>
     );
